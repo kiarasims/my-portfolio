@@ -12,3 +12,11 @@
     border: 5px ridge rgb(43, 132, 146);
     background-color: rgba(135, 194, 233, 0.534)
 }
+
+#subcontent{
+    max-width: 1000px;
+    height: auto;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
