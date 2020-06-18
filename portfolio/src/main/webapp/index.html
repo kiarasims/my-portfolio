@@ -39,7 +39,28 @@
       <script>
       document.getElementById("results").onclick = function() {getRandomFacts()}  </script>
 
-      
+      <form action="/data" method="POST">
+      <fieldset>
+      <legend> Comment:</legend>
+      <lable for="aname"> Name:</lable><br>
+      <input type="text" id="aname" name="aname" value="John Doe"><br>
+      <label for="personEmail"> Email:</label><br>
+      <input type="email" id="personEmail" name="personEmail" value="JohnDoe@gmail.com"><br>
+      <p>Enter a comment on my page:</p>
+
+      <textarea name="text-input">type up to 10 words</textarea>
+      <br/><br/>
+
+      <label for="options">Choose some options:</label><br>
+      <select id="options" name="options" size="2" multiple>
+      <option type="checkbox" name="upper-case" value="true"> Upper-case</option>
+      <br/>
+      <option type="checkbox" name="sort" value="true"> Alphabetize</option>
+      <br/><br/>
+      <input type="submit" value="Submit"/>
+      </fieldset>
+    </form>
+    <p>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</p>
     </div>
   </body>
 </html>
