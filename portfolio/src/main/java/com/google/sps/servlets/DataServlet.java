@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import com.google.gson.Gson;
 import static java.lang.System.out;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -61,6 +64,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String text = getParameter(request, "text-input", "");
+    long timestamp = System.currentTimeMillis();
     boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
     boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
     // Convert the text to upper case.
@@ -76,12 +80,18 @@ public class DataServlet extends HttpServlet {
       Arrays.sort(words);
     }
 
-    
+    Entity taskEntity = new Entity("Data");
+    taskEntity.setProperty("text-input", text);
+    taskEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
 
     // Respond with the result.
     response.setContentType("text/html;");
     response.sendRedirect("/index.html");
     response.getWriter().println(Arrays.toString(words));
+
   }
 
 
