@@ -25,4 +25,29 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+
+}
+//document.getElementById("results").innerHtml = facts
+
+function getRandomFacts(){
+    
+    fetch("/data").then(response => response.json()).then((facts) => {
+    console.log(facts);
+    const factsListElement = document.getElementById('greeting-container');
+    factsListElement.innerHTML = "";
+    factsListElement.appendChild(
+        createListElement('fact1: ' + facts[0]));
+    factsListElement.appendChild(
+        createListElement('fact2: ' + facts[1]));
+    factsListElement.appendChild(
+        createListElement('fact3 ' + facts[2]));
+    });
+
+}
+
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
