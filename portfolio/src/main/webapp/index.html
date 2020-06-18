@@ -4,7 +4,8 @@
     <meta charset="UTF-8" >
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js">
+        </script>
   </head>
   <body id="background">
     <div id="content">
@@ -34,8 +35,11 @@
 
       <p> This is Luna and her big sister Ari. Luna have the curly hair. </p>
       <img id="subcontent" src="Images/Luna-and-Ari.JPG">
+      <p id="results">Click me</p>
+      <script>
+      document.getElementById("results").onclick = function() {getRandomFacts()}  </script>
 
-        
+      
     </div>
   </body>
 </html>
