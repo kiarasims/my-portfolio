@@ -35,10 +35,13 @@
 
       <p> This is Luna and her big sister Ari. Luna have the curly hair. </p>
       <img id="subcontent" src="Images/Luna-and-Ari.JPG">
-      
-      <p id="results">Click me</p>
+
+      <p id="results" onclick="getFacts()">Click me</p>
       <script>
-      document.getElementById("results").onclick = function() {getRandomFacts()}  </script>
+      function getFacts(){
+      facts = getRandomFacts();
+      document.getElementById("results").innerHTML = facts}  </script>
+
 
       <form action="/data" method="POST">
       <fieldset>
