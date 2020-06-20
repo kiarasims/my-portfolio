@@ -35,12 +35,7 @@ function getRandomFacts(){
     console.log(facts);
     const factsListElement = document.getElementById('greeting-container');
     factsListElement.innerHTML = "";
-    factsListElement.appendChild(
-        createListElement('fact1: ' + facts[0]));
-    factsListElement.appendChild(
-        createListElement('fact2: ' + facts[1]));
-    factsListElement.appendChild(
-        createListElement('fact3 ' + facts[2]));
+    facts.forEach((com) => {factsListElement.appendChild(createListElement(com));})
     });
 
 }
