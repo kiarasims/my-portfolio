@@ -1,18 +1,66 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" >
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js">
+        </script>
   </head>
-  <body>
+  <body id="background" onload="getRandomFacts()">
     <div id="content">
-      <h1>My Portfolio</h1>
+      <h1>Kiara's Portfolio</h1>
       <p>This is my portfolio.</p>
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
+
+      <p> My name is Kiara Sims. I am a upcoming junior Computer Science major at Xavier University of Louisiana.
+          I was born, partially raised and living in New Orleans. After hurricane Katrina, I moved to Mississippi
+          by my grandfather side of the family. I lived in Mississippi until I was in the 7th grade then moved back 
+          to New Orleans for the rest of my school years and college.</p> 
+      
+      <p> So far this is my favorite picture of myself. </p>
+      <img id="subcontent" src="Images/fav-pic.JPG">
+      
+      <ol> 
+          <li> Image Filters</li>
+          <li> Digital photograph album</li>
+      </ol>
+
+      <a href="https://github.com/kiarasims"> Visit my GitHub here </a>
+
+      <p> This is Luna when she was 2 weeks old. </p>
+      <img id="subcontent" src="Images/luna_2weeks.JPG">
+
+      <p> This is Luna and her big sister Ari. Luna have the curly hair. </p>
+      <img id="subcontent" src="Images/Luna-and-Ari.JPG">
+
+      <button  onclick="getRandomFacts()">Click me</button>
+      
+      <form action="/data" method="POST">
+      <fieldset>
+      <legend> Comment:</legend>
+      <lable for="aname"> Name:</lable><br>
+      <input type="text" id="aname" name="name" value="John Doe"><br>
+      <label for="personEmail"> Email:</label><br>
+      <input type="email" id="personEmail" name="personEmail" value="JohnDoe@gmail.com"><br>
+      <p>Enter a comment on my page:</p>
+
+      <textarea name="text-input">type up to 10 words</textarea>
+      <br/><br/>
+
+      <label for="options">Choose some options:</label><br>
+      <select id="options" name="options" size="2" multiple>
+      <option name="upper-case" value="true"> Upper-case</option>
+      <br/>
+      <option name="sort" value="true"> Alphabetize</option>
+      <br/><br/>
+      <input type="submit" value="Submit"/>
+      </fieldset>
+    </form>
+    <p id="greeting-container"></p>
+    <p>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</p>
     </div>
   </body>
 </html>

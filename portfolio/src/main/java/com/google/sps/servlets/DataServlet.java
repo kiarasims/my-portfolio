@@ -19,14 +19,119 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import com.google.gson.Gson;
+import static java.lang.System.out;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Task;
+
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
+
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+    /** ArrayList<String> messages = new ArrayList<>();
+    messages.add("I love blue");
+    messages.add("I have 2 pets");
+    messages.add("My hair is thick");*/
+
+    Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Task> tasks = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("text-input");
+      String email = (String) entity.getProperty("personEmail");
+      long timestamp = (long) entity.getProperty("timestamp");
+      
+
+      Task task = new Task(id, name, text, email, timestamp);
+      tasks.add(task);
+    }
+
+    Gson gson = new Gson();
+
+    //String ArrayJson = convertToJsonUsingGson(tasks);
+    response.setContentType("application/json");
+    
+
+    response.getWriter().println(gson.toJson(tasks));
+    //response.setContentType("text/html;");
+    //response.getWriter().println("<h1>Hello Kiara!</h1>");
+
+
+  
+ }
+
+
+  private String convertToJsonUsingGson(ArrayList<String> note) {
+    Gson gson = new Gson();
+    String json = gson.toJson(note);
+    return json;
   }
+
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getParameter(request, "name", "");
+    String text = getParameter(request, "text-input", "");
+    String email = getParameter(request, "personEmail", "");
+    long timestamp = System.currentTimeMillis();
+    boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "true"));
+    boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "true"));
+    // Convert the text to upper case.
+    if (upperCase) {
+      text = text.toUpperCase();
+    }
+
+    // Break the text into individual words.
+    String[] words = text.split("\\s*,\\s*");
+
+    // Sort the words.
+    if (sort) {
+      Arrays.sort(words);
+    }
+
+    Entity taskEntity = new Entity("Data");
+    taskEntity.setProperty("name", name);
+    taskEntity.setProperty("personEmail", email);
+    taskEntity.setProperty("text-input", text);
+    taskEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.sendRedirect("/index.html");
+    response.getWriter().println(Arrays.toString(words));
+
+  }
+
+
+   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
+  
 }
+  
+
