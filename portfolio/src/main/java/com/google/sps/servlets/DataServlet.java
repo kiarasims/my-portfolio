@@ -27,6 +27,12 @@ import static java.lang.System.out;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Task;
+
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -35,18 +41,36 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> messages = new ArrayList<>();
+    /** ArrayList<String> messages = new ArrayList<>();
     messages.add("I love blue");
     messages.add("I have 2 pets");
-    messages.add("My hair is thick");
+    messages.add("My hair is thick");*/
 
-    
-    String ArrayJson = convertToJsonUsingGson(messages);
-    System.out.println(ArrayJson);
+    Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Task> tasks = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("text-input");
+      String email = (String) entity.getProperty("personEmail");
+      long timestamp = (long) entity.getProperty("timestamp");
+      
+
+      Task task = new Task(id, name, text, email, timestamp);
+      tasks.add(task);
+    }
+
+    Gson gson = new Gson();
+
+    //String ArrayJson = convertToJsonUsingGson(tasks);
     response.setContentType("application/json");
     
 
-    response.getWriter().println(ArrayJson);
+    response.getWriter().println(gson.toJson(tasks));
     //response.setContentType("text/html;");
     //response.getWriter().println("<h1>Hello Kiara!</h1>");
 
@@ -60,13 +84,16 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(note);
     return json;
   }
+
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
+    String name = getParameter(request, "name", "");
     String text = getParameter(request, "text-input", "");
+    String email = getParameter(request, "personEmail", "");
     long timestamp = System.currentTimeMillis();
-    boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
-    boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
+    boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "true"));
+    boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "true"));
     // Convert the text to upper case.
     if (upperCase) {
       text = text.toUpperCase();
@@ -81,6 +108,8 @@ public class DataServlet extends HttpServlet {
     }
 
     Entity taskEntity = new Entity("Data");
+    taskEntity.setProperty("name", name);
+    taskEntity.setProperty("personEmail", email);
     taskEntity.setProperty("text-input", text);
     taskEntity.setProperty("timestamp", timestamp);
 
