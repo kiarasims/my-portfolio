@@ -7,7 +7,7 @@
     <script src="script.js">
         </script>
   </head>
-  <body id="background">
+  <body id="background" onload="getRandomFacts()">
     <div id="content">
       <h1>Kiara's Portfolio</h1>
       <p>This is my portfolio.</p>
@@ -36,18 +36,13 @@
       <p> This is Luna and her big sister Ari. Luna have the curly hair. </p>
       <img id="subcontent" src="Images/Luna-and-Ari.JPG">
 
-      <p id="results" onclick="getFacts()">Click me</p>
-      <script>
-      function getFacts(){
-      facts = getRandomFacts();
-      document.getElementById("results").innerHTML = facts}  </script>
-
-
+      <button  onclick="getRandomFacts()">Click me</button>
+      
       <form action="/data" method="POST">
       <fieldset>
       <legend> Comment:</legend>
       <lable for="aname"> Name:</lable><br>
-      <input type="text" id="aname" name="aname" value="John Doe"><br>
+      <input type="text" id="aname" name="name" value="John Doe"><br>
       <label for="personEmail"> Email:</label><br>
       <input type="email" id="personEmail" name="personEmail" value="JohnDoe@gmail.com"><br>
       <p>Enter a comment on my page:</p>
@@ -57,13 +52,14 @@
 
       <label for="options">Choose some options:</label><br>
       <select id="options" name="options" size="2" multiple>
-      <option type="checkbox" name="upper-case" value="true"> Upper-case</option>
+      <option name="upper-case" value="true"> Upper-case</option>
       <br/>
-      <option type="checkbox" name="sort" value="true"> Alphabetize</option>
+      <option name="sort" value="true"> Alphabetize</option>
       <br/><br/>
       <input type="submit" value="Submit"/>
       </fieldset>
     </form>
+    <p id="greeting-container"></p>
     <p>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</p>
     </div>
   </body>
